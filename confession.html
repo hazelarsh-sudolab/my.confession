@@ -16,20 +16,13 @@
                 z-index: 1000;
             }
             .music-btn {
-                background-color: #ff6b81;
-                color: white;
+                background: none;
+                color: black;
                 border: none;
-                border-radius: 50%;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
+                font-size: 24px;
                 cursor: pointer;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                transition: all 0.3s;
-            }
-            .music-btn:hover {
-                background-color: #ff4757;
-                transform: scale(1.1);
+                padding: 5px;
+                margin: 0;
             }
             .hidden {
                 display: none;
@@ -81,43 +74,38 @@
             <button id="playBtn" class="music-btn">▶</button>
             <button id="stopBtn" class="music-btn hidden">■</button>
             <audio id="bgMusic" loop>
-                <source src="side_of_paradise.mp3" type="audio/mpeg">
-                <!-- Note: Replace with actual music file URL -->
+                <source src="side_of_paradise.mp3.mp3" type="audio/mpeg">
+                <!-- Replace with your actual music file -->
             </audio>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script defer src="confession.js"></script>
         <script>
-            // Music control functionality
             document.addEventListener('DOMContentLoaded', function() {
                 const audio = document.getElementById('bgMusic');
                 const playBtn = document.getElementById('playBtn');
                 const stopBtn = document.getElementById('stopBtn');
                 
-                // Try to autoplay (may be blocked by browser)
+                // Try to autoplay
                 const playPromise = audio.play();
                 
                 if (playPromise !== undefined) {
                     playPromise.then(_ => {
-                        // Autoplay worked
                         playBtn.classList.add('hidden');
                         stopBtn.classList.remove('hidden');
                     })
                     .catch(error => {
-                        // Autoplay was prevented
                         console.log('Autoplay prevented:', error);
                     });
                 }
                 
-                // Play button click
                 playBtn.addEventListener('click', function() {
                     audio.play();
                     playBtn.classList.add('hidden');
                     stopBtn.classList.remove('hidden');
                 });
                 
-                // Stop button click
                 stopBtn.addEventListener('click', function() {
                     audio.pause();
                     audio.currentTime = 0;

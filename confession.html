@@ -9,24 +9,30 @@
         <link rel="stylesheet" href="confession.css">
         <title>Valentine Confession</title>
         <style>
-            .music-player {
+            .music-control {
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
-                width: 300px;
-                height: 80px;
                 z-index: 1000;
-                opacity: 0.8;
-                transition: opacity 0.3s;
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             }
-            .music-player:hover {
-                opacity: 1;
-            }
-            .music-player iframe {
+            .music-btn {
+                background-color: #ff6b81;
+                color: white;
                 border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                cursor: pointer;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                transition: all 0.3s;
+            }
+            .music-btn:hover {
+                background-color: #ff4757;
+                transform: scale(1.1);
+            }
+            .hidden {
+                display: none;
             }
         </style>
     </head>
@@ -70,13 +76,55 @@
             </div>
         </div>
         
-        <!-- Music Player -->
-        <div class="music-player">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ByGLHhJa9NE?autoplay=1&controls=0&modestbranding=1&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- Music Control -->
+        <div class="music-control">
+            <button id="playBtn" class="music-btn">▶</button>
+            <button id="stopBtn" class="music-btn hidden">■</button>
+            <audio id="bgMusic" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                <!-- Note: Replace with actual music file URL -->
+            </audio>
         </div>
 
-        <!-- Updated jQuery and script references -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script defer src="confession.js"></script>
+        <script>
+            // Music control functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const audio = document.getElementById('bgMusic');
+                const playBtn = document.getElementById('playBtn');
+                const stopBtn = document.getElementById('stopBtn');
+                
+                // Try to autoplay (may be blocked by browser)
+                const playPromise = audio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Autoplay worked
+                        playBtn.classList.add('hidden');
+                        stopBtn.classList.remove('hidden');
+                    })
+                    .catch(error => {
+                        // Autoplay was prevented
+                        console.log('Autoplay prevented:', error);
+                    });
+                }
+                
+                // Play button click
+                playBtn.addEventListener('click', function() {
+                    audio.play();
+                    playBtn.classList.add('hidden');
+                    stopBtn.classList.remove('hidden');
+                });
+                
+                // Stop button click
+                stopBtn.addEventListener('click', function() {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    stopBtn.classList.add('hidden');
+                    playBtn.classList.remove('hidden');
+                });
+            });
+        </script>
     </body>
 </html>
